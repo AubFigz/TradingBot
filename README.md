@@ -1,18 +1,23 @@
 About the Project
+
 This project focuses on building a robust, automated cryptocurrency trading system leveraging advanced machine learning techniques and real-time data analysis. The system integrates various sources of data, including price trends, social media sentiment, and blockchain metrics, to make informed trading decisions. By combining modern data-driven approaches, the project aims to optimize profitability and minimize risk in a highly volatile market environment.
 
 Project Overview
+
 The project entails multiple stages, starting with data collection from APIs, data preprocessing, feature engineering, and model training. The system is designed to continuously update itself with new data to refine predictions and strategies. Once trained, the models are evaluated on unseen data, and the best-performing model is selected for live trading. In addition to individual models, the project explores the use of model ensembles to combine strengths from various machine learning algorithms, further improving prediction accuracy.
 
 The project also integrates automated risk management strategies and backtesting, allowing us to simulate trading strategies using historical data before deploying them in live markets.
 
+
 Workflow:
 Currently in Repository
+
 Data Collection:
 
 Collect real-time and historical market data, social media sentiment, and blockchain metrics.
 Use APIs such as CoinGecko, Binance, and other relevant financial data sources.
 Store data in databases for use in model training and analysis.
+
 Data Preprocessing:
 
 Clean, normalize, and merge the data.
@@ -33,36 +38,42 @@ Use metrics like Sharpe Ratio, Max Drawdown, and others to analyze risks.
 Overview of Main Files:
 
 market_data.py:
+
 Libraries: pandas, numpy, sqlalchemy, asyncio, aiohttp, websockets, cachetools, logging
 Data Sources: Binance, Coinbase Pro, FTX, Bitfinex, Alpaca, Serum DEX, Solana, DexScreener, Dextools, Messari, TradingView, CryptoCompare, AlphaVantage, CoinGecko, Kraken, CoinMarketCap, Nomics, HistoricalData, Benchmark
 Calculations: Volume Weighted Average Price (VWAP), Relative Strength Index (RSI), Moving Average Convergence Divergence (MACD), Bollinger Bands, chart and candlestick patterns (from utils.py), whale transaction identification
 Key Processing Steps and Methods/Tools Used: Fetching data via WebSocket and REST APIs, retry logic for failed operations, cross-validating fetched prices, calculating technical indicators, detecting chart and candlestick patterns, saving processed data to databases.
 
 news_fetcher.py:
+
 Libraries: pandas, SQLAlchemy, aiohttp, requests, feedparser, networkX, Concurrent Futures, Redis, Prometheus, Websockets, PySpark, statistics
 Data Sources: RSS, FRED API, NewsAPI, GDELT API, Google Trends, WebSocket
 Calculations: Sentiment scores, Sentiment Volatility, entity relationships
 Key Processing Steps and Methods/Tools Used: Fetching news data, sentiment analysis using NLP, parallel processing, topic modeling, network analysis
 
 blockchain_data.py:
+
 Libraries: pandas, aiohttp, asyncio, SQLAlchemy
 Data Sources: Alchemy (ethereum, polygon, shape, zksync, optimism, starknet, arbitrum, arbitrum_nova, astar, zetachain, fantom_opera, mantle, blast, linea, zora, polynomial, base, solana, frax), BSCscan (Binance), MiningPool
 Calculations: On-chain metrics, Whale transactions, chart patterns, candlestick patterns, wallet profitability, cross-chain metrics
 Key Processing Steps and Methods/Tools Used: Retrieves both real-time and historical data, analyzes on-chain metrics, and performs additional analytics such as whale transaction identification, chart pattern recognition, and cross-chain comparisons. The data is then stored in a structured database and saved to CSV files. 
 
 x_sentiment.py:
+
 Libraries: pandas, PySpark, SQLAlchemy, aiohttp, asyncio, Telethon, praw, discord.ext.commands, networkX, Redis
 Data Sources: Twitter API, Reddit API, Telegram API, Discord
 Calculations: Sentiment scores, trends, volatility, engagement rates, influencer impact
 Key Processing Steps and Methods/Tools Used: Social media data collection, text cleaning, sentiment analysis, real-time sentiment tracking, topic modeling, network analysis.
 
 data_preparation.py:
+
 Libraries: pandas, SQLAlchemy, scikit-learn, PySpark, PyOD, Tenacity 
 Data Sources: market_data, benchmark_data, order_book_data, news_data, x_data, blockchain_data
 Calculations: Data imputation and augmentation (MICE, AutoEncoder, PolynomialFeatures), anomaly detection (PCA, AutoEncoder)
 Key Processing Steps and Methods/Tools Used: Process and integrate datasets from various sources, ensuring they are cleaned, processed, and merged into a single dataset for further analysis. Leverages advanced data processing techniques such as data imputation, anomaly detection, and data augmentation, ensuring that the output dataset is ready for downstream tasks like feature engineering and model training.
 
 feature_engineering.py:
+
 Libraries: pandas, numpy, scikit-learn, featuretools, TA-lib, prometheus, Dask, asyncio
 Data Sources: output_data (from data_preparation.py output database)
 Calculations: Technical indicators, rolling statistics, risk metrics
