@@ -1,0 +1,546 @@
+solana:
+  endpoint: "https://api.devnet.solana.com"
+  encrypted_private_key: "gAAAAABmonjmCXMKqkpj1nwDywxIM4SyfEgzeu1qbOAujTy2nd7nHWqZOGlzOg8o663jSd5qUWFVeya56AavopKT2cNTj62SASoIauBA7PvSwgi71-U1AYHC5uKmDk2Y0oFpy6cGLVXeb3UDrGm64lAkXvmwNSbqqbQoz5uoFLnJz27fKLpB2W5F5ks-1CjdCyrKal0NlkpPbNJV41D_tAuqZDRY-9ZRnY-a1P-48oUqnUFA58jYJWIXOUUHyPrkE0J1Q_9xrF_Qd0B9KuYOL3_X61xcFemITyokVzpMf0RWX614qh7PqHoU4f68szlD8LmHFYvAtLVTJL7nTOrXLR27w60-4n4YYtmzuk6g91KoKDC_WMN30_6ulGUkd6YiSIlfA23qEB2s"
+  encrypted_public_key: "gAAAAABmonjmit5Ecf4s0AzoLpC_y5z_XYphcsap3x_KV___xztS53PFwYARtApHbcyeTuawCqJRuqmXG_TlGSHN0AgyNIejyqW6JQmAtHOgc1SEGkZB6nrB2NnxSAMPqvMlsUonVIwR"
+  token_mint_address: ""  # This will be dynamically fetched
+  mint_address_api: "https://api.mainnet-beta.solana.com"
+
+trading_env:
+  initial_balance: 10000
+  transaction_cost: 0.001
+  look_back: 60
+  risk_tolerance: 0.01
+  stop_loss_percentage: 0.05
+  take_profit_percentage: 0.05
+  model_update_frequency: 24
+
+model_training:
+  epochs: 50
+  batch_size: 32
+  patience: 10
+  factor: 0.2
+  min_lr: 0.001
+  total_timesteps: 100000
+  validation_split: 0.2
+  optimizer: "adam"
+  loss_function: "mse"
+  test_split: 0.2
+
+# Logging configuration
+logging:
+  level: "INFO"  # Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"  # Log format
+  handlers:
+    - type: "file"
+      filename: "app.log"  # Path to the log file
+      maxBytes: 10485760  # Log rotation size (10MB)
+      backupCount: 5  # Number of backup log files to keep
+    - type: "console"
+
+data_fetching:
+  fetch_interval: 60
+  prometheus_port: 8000
+  market_data_file: "market_data.csv"
+  order_book_data_file: "order_book_data.csv"
+  news_data_file: "news_data.csv"
+  x_sentiment_data_file: "x_sentiment_data.csv"
+  blockchain_data_file: "blockchain_data.csv"
+  combined_data_with_features_file: "combined_data_with_features.csv"
+  final_data_with_features_file: "final_data_with_features.csv"
+  test_data_with_features_file: "test_data_with_features.csv"
+  backtesting_results_file: "backtesting_results.csv"
+  risk_management_results_file: "risk_management_results.csv"
+  retry_attempts: 3
+  retry_delay: 5
+
+monitoring:
+  interval_seconds: 3600  # Monitoring interval for logging stats
+
+api:
+  alphavantage:
+    url: "https://www.alphavantage.co/query"
+    params:
+      function: "TIME_SERIES_DAILY"
+      symbol: "{symbol}"
+      outputsize: "full"
+      datatype: "json"
+    encrypted_key: "gAAAAABmvgn10rPlxbNOxObZgOsZkn8f7IPfNP8d2sufKvOpag1TM_UfH1gdUE9O5H3SNNblm9uvwuCWLonYzh9rbdxX3m5yR29z7l2hfCu2ywSamTe0byE="
+    rate_limit: 0.083  # 1 request every 12 seconds for free API
+    rate_period: 12
+
+  binance_websocket:
+    url: "wss://stream.binance.com:9443/ws"
+    params: {}
+    rate_limit: 20  # 20 requests per second
+    rate_period: 1
+
+  coingecko:
+    url: "https://api.coingecko.com/api/v3/coins/{symbol}/market_chart"
+    params:
+      vs_currency: "usd"
+      days: "1"
+      interval: "minute"
+    rate_limit: 1  # 1 request per second (conservative estimate)
+    rate_period: 1
+
+  solana_json_rpc:
+    url: "https://api.mainnet-beta.solana.com"
+    params: {}
+    rate_limit: 5  # 5 requests per second (based on general practice)
+    rate_period: 1
+
+  kraken:
+    url: "https://api.kraken.com/0/public/OHLC"
+    params:
+      pair: "{symbol}USD"
+      interval: "1"
+    rate_limit: 1  # 1 request per second
+    rate_period: 1
+
+  coinbase_pro:
+    websocket_url: "wss://ws-feed.pro.coinbase.com"
+    url: "https://api.pro.coinbase.com/products/{symbol}-USD/candles"
+    params:
+      granularity: 60
+    rate_limit: 10  # 10 requests per second for public endpoints
+    rate_period: 1
+
+  serum_dex:
+    websocket_url: "wss://serum-ws.bonfida.com"
+    url: "https://serum-api.bonfida.com/candles/{symbol}USDT"
+    params:
+      resolution: "1"
+    rate_limit: 10  # Estimated limit based on DEX usage
+    rate_period: 1
+
+  solana_websocket:
+    url: "wss://api.mainnet-beta.solana.com"
+    params: {}
+    rate_limit: 5  # Estimated limit based on general practice
+    rate_period: 1
+
+  ftx:
+    websocket_url: "wss://ftx.com/ws/"
+    url: "https://ftx.com/api/markets/{symbol}/USD/candles"
+    params:
+      resolution: 60
+    rate_limit: 30  # 30 requests per second
+    rate_period: 1
+
+  bitfinex:
+    websocket_url: "wss://api-pub.bitfinex.com/ws/2"
+    url: "https://api.bitfinex.com/v2/candles/trade:1m:t{symbol}USD/hist"
+    params: {}
+    rate_limit: 10  # 10 requests per second
+    rate_period: 1
+
+  alpaca:
+    websocket_url: "wss://data.alpaca.markets/stream"
+    url: "https://data.alpaca.markets/v2/stocks/{symbol}/bars"
+    params:
+      timeframe: "1Min"
+    encrypted_key: "gAAAAABmq7lOT1B5wuhnjXpKrfoVxuvfRnhoAq9XJGbH0zRfWOCOjt4LM3PR3Pjl6W7nRdi6f0b1Y3WkBna9Y1T8QSRZYxngmhnqAowdPLPk4fjYcpAcxOo="
+    encrypted_secret: "gAAAAABmq7lObJh2KHWy4PVnVz7V4EldSfDCg-GI26gL24vlrss8-YkJvrbXoNfn131W2b667HZb9MoJ2-sfwWNznwP4g-gOmpiySrb-ebDOtbxZU5ln74cXnmaPF08ksp3v6hKBI6-Q"
+    rate_limit: 3  # 3 requests per second
+    rate_period: 1
+
+  dexscreener:
+    url: "https://api.dexscreener.com/latest/dex/pairs/solana"
+    params: {}
+    rate_limit: 5  # Estimated limit based on DEX usage
+    rate_period: 1
+
+  dextools:
+    url: "https://www.dextools.io/public-api/pair"
+    params:
+      pairAddress: "{pair_address}"  # Ensure this is dynamically fetched before making the API call
+    rate_limit: 5  # Estimated limit based on DEX usage
+    rate_period: 1
+
+  historical_data:
+    url: "https://api.historicaldata.com/v1/markets/{symbol}-USD/candles"
+    params:
+      resolution: 60
+      start_time: "{start_time}"  # Dynamic start time
+      end_time: "{end_time}"      # Dynamic end time
+    rate_limit: 1  # 1 request per second
+    rate_period: 1
+
+  tradingview:
+    url: "https://api.tradingview.com/v1/symbols/{symbol}/data"
+    params:
+      time_frame: "1D"
+    rate_limit: 1  # Estimated limit for public API usage
+    rate_period: 1
+
+  messari:
+    url: "https://data.messari.io/api/v1/assets/{symbol}/metrics/market-data"
+    params: {}
+    rate_limit: 1  # Estimated limit for public API usage
+    rate_period: 1
+
+  coinmarketcap:
+    url: "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest"
+    params:
+      symbol: "{symbol}"
+      convert: "USD"
+    rate_limit: 1  # 1 request per second (based on free tier)
+    rate_period: 1
+
+  nomics:
+    url: "https://api.nomics.com/v1/currencies/ticker"
+    params:
+      ids: "{symbol}"
+      convert: "USD"
+    rate_limit: 1  # Estimated limit based on API usage
+    rate_period: 1
+
+  cryptocompare:
+    url: "https://min-api.cryptocompare.com/data/price"
+    params:
+      fsym: "{symbol}"
+      tsyms: "USD"
+    rate_limit: 1  # 1 request per second
+    rate_period: 1
+
+networks:
+  ethereum:
+    alchemy_url: "https://eth-mainnet.alchemyapi.io/v2/{alchemy_key}"
+  polygon:
+    alchemy_url: "https://polygon-mainnet.g.alchemy.com/v2/{alchemy_key}"
+  binance_smart_chain:
+    bscscan_url: "https://api.bscscan.com/api"
+    mining_data_url: "https://api.miningpool.com/v1/bsc"
+  shape:
+    alchemy_url: "https://shape-mainnet.alchemyapi.io/v2/{alchemy_key}"
+  zksync:
+    alchemy_url: "https://zksync-mainnet.alchemyapi.io/v2/{alchemy_key}"
+  optimism:
+    alchemy_url: "https://optimism-mainnet.alchemyapi.io/v2/{alchemy_key}"
+  starknet:
+    alchemy_url: "https://starknet-mainnet.alchemyapi.io/v2/{alchemy_key}"
+  arbitrum:
+    alchemy_url: "https://arb1-mainnet.alchemyapi.io/v2/{alchemy_key}"
+  arbitrum_nova:
+    alchemy_url: "https://nova.arbitrum.io/rpc/{alchemy_key}"
+  astar:
+    alchemy_url: "https://astar-mainnet.alchemyapi.io/v2/{alchemy_key}"
+  zetachain:
+    alchemy_url: "https://zetachain-mainnet.alchemyapi.io/v2/{alchemy_key}"
+  fantom_opera:
+    alchemy_url: "https://fantom-mainnet.alchemyapi.io/v2/{alchemy_key}"
+  mantle:
+    alchemy_url: "https://mantle-mainnet.alchemyapi.io/v2/{alchemy_key}"
+  blast:
+    alchemy_url: "https://blast-mainnet.alchemyapi.io/v2/{alchemy_key}"
+  linea:
+    alchemy_url: "https://linea-mainnet.alchemyapi.io/v2/{alchemy_key}"
+  zora:
+    alchemy_url: "https://zora-mainnet.alchemyapi.io/v2/{alchemy_key}"
+  polynomial:
+    alchemy_url: "https://polynomial-mainnet.alchemyapi.io/v2/{alchemy_key}"
+  base:
+    alchemy_url: "https://base-mainnet.alchemyapi.io/v2/{alchemy_key}"
+  solana:
+    alchemy_url: "https://solana-mainnet.alchemyapi.io/v2/{alchemy_key}"
+  frax:
+    alchemy_url: "https://frax-mainnet.alchemyapi.io/v2/{alchemy_key}"
+
+trading:
+  min_profit: -100
+  max_profit: 100
+  symbol: "BTCUSDT"
+  interval: "1m"
+
+newsapi:
+  encrypted_key: "gAAAAABmonjmaAnO2FghBUdpcVJdTxTxoZOWN7i7IgVTQwk9d1SmOUtBgEuJCkf2D8YiApGIwvFHCKQ386WoZ6AO0R8e51_pHgyFG1uqMa_QXgLCVoWVEMSBua5_in2_nl3dJWu6hrQv"
+  rate_limit: 0.5  # 1 request every 2 seconds
+  rate_period: 2
+  news_sources: [
+    "cnn",
+    "bbc-news",
+    "crypto-coins-news",
+    "coindesk",
+    "cointelegraph",
+    "the-block",
+    "decrypt",
+    "ethereumworldnews",
+    "cryptobriefing",
+    "bitcoinmagazine",
+    "cryptoslate",
+    "newsbtc",
+    "coinjournal",
+    "cryptopolitan",
+    "solana-news",
+    "ethnews"
+  ]
+
+anomaly_detection:
+  contamination: 0.01
+
+feature_selection:
+  k_best: 10
+
+redis:
+  host: "localhost"
+  port: 6379
+  db: 0
+
+prometheus:
+  enabled: true  # Enable or disable Prometheus monitoring
+  port: 8000  # Port for Prometheus metrics
+
+database:
+  market_data: "sqlite:///market_data.db"
+  order_book_data: "sqlite:///order_book_data.db"
+  benchmark_data: "sqlite:///benchmark_data.db"
+  news_data: "sqlite:///news_data.db"
+  x_data: "sqlite:///x_data.db"
+  blockchain_data: "sqlite:///blockchain_data.db"
+  output_data: "sqlite:///output_data.db"
+  feature_engineering_output: "sqlite:///feature_engineering_output.db"
+  backtesting_data: "sqlite:///backtesting_data.db"
+  risk_management_data: "sqlite:///risk_management_data.db"
+
+optuna:
+  net_arch_min: 32
+  net_arch_max: 512
+  n_steps_min: 128
+  n_steps_max: 4096
+  batch_size_min: 32
+  batch_size_max: 512
+  gamma_min: 0.9
+  gamma_max: 0.9999
+  learning_rate_min: 1e-6
+  learning_rate_max: 1e-3
+  ent_coef_min: 0.00001
+  ent_coef_max: 0.1
+  clip_range_min: 0.1
+  clip_range_max: 0.4
+  n_trials: 200
+
+x:
+  encrypted_bearer_token: "gAAAAABmqSpfZoyNiMyyxH2fe0IJ4JMCV8AuBQgt8d4XVp7XaP4NwWNgnxuuGxsaAsXfFLHHytRNQJdx_I7lpsWADlyeKPeQtY5QqComlwX0UcaT2KbxcSmfgwh7vdulZs7xot5REw1W366cm_p8Z48NprSpKMk8SA=="
+  max_workers: 10
+  query: "Solana OR $SOL OR cryptocurrency OR crypto trading OR blockchain OR DeFi OR staking OR DApps OR crypto ecosystem OR Bitcoin OR Ethereum OR Altcoin OR crypto market OR ICO OR IEO OR HODL OR FOMO OR FUD OR bull market OR bear market OR whale OR airdrop OR tokenomics"
+
+reddit:
+  encrypted_client_id: "gAAAAABmvklBQhbb-vrnIuXYUucwebh7HAkeBV95C7-sbgM08l2xmnShzAEr6yxJpGNVUE75HjI3oRIHRDKcW2M-_0L_c438rTp6pfl5-tHAXk8CqBa9xPE="
+  encrypted_client_secret: "gAAAAABmvklBlliE3mY4uODoOelmy5uoZY_k_Pq5_yJoavp68KVy4Dsq5bCCxibhWZ3289uZMusGRPynkGGgaev-pKbzKX0BunT2MdZUbA3hARCzb0fHO5Y="
+  encrypted_user_agent: "gAAAAABmvklB8cPIoYa7uXPwV4vuLWkwI_BMpdJ3JfBDDJSqtc1ZWlhAqCRM7gCmfYwJPFSjNgZO7_-jmWBBnTaLRfIKA-vcP32_4sYnJdBVakfnQUnmXq8="
+  subreddits:
+    - 'solana'
+    - 'SolanaNFT'
+    - 'SolanaDeFi'
+    - 'solanacrypto'
+    - 'solanaofficial'
+    - 'cryptocurrency'
+    - 'CryptoMarkets'
+    - 'Bitcoin'
+    - 'ethereum'
+
+telegram:
+  encrypted_api_id: "gAAAAABmspX5BA2TZMy3EW4LdZdlXrCcrHWcTpWebr0sTcvdK3eEYqmW7yrF93WJR-vTUZMWw4ypxwHBdJoyMhk2ZqMFtH_7eg=="
+  encrypted_api_hash: "gAAAAABmspX5cA-f-_fvrEmjG_I2TVh-P-JgkcwY61DFpTH4WgGmSNpEeiRiymqRsEa1j3B2yxv7kawsKs6umNl4DEcBLdS3tqTLpdChSsM6okNLNq07YKl6wmd5IaxhPCxrjFmS-1ep"
+  encrypted_phone_number: "gAAAAABmspX5z7vx_DkX0imPWuzwq95Q68uQd9kMX92JUiw93rzY1jaNztqmjwCxQDKWzsrwIfiPDc6CuSo7G0LxlHVzF5Mnbw=="
+  channels:
+    - 'solana'
+    - 'SolanaNFT'
+    - 'SolanaDeFi'
+    - 'solanacrypto'
+    - 'solanaofficial'
+    - 'cryptocurrency'
+
+discord:
+  encrypted_token: "gAAAAABmspX5KkplCL_R9dBX_HJKAABfWrDc8u1c19bHZdWUVf4xP2Hl-fFeN9_ndtiuymi6rppuuXxrrd129WqDkyqV-J14w-0mFtgkLqh206QfA6DXh3vZv49vQkBgfGBIlQ6mRELah1parYAh9uu1Ear0QlTFYw7QkByvUnMULh_AN6BvqYs="
+  channels:
+    - 'solana'
+    - 'SolanaNFT'
+    - 'SolanaDeFi'
+    - 'solanacrypto'
+    - 'solanaofficial'
+    - 'Bitcoin'
+    - 'Ethereum'
+
+bscscan:
+  encrypted_key: "gAAAAABmqTxr18cg9xnJC9WE9TT3EzFGBccdgjQVjjisSpiNQ1GmSj03ro7m1Gyccc8fZMamUawMBWSYu34RJy0x-Y3mgDNPYoKsZS3wg-JrkhDkk1xSUFxGlqWJEbOOFdv2lp-CI0ey"
+
+alchemy:
+  encrypted_key: "gAAAAABmqTxrnlweTef1QE68_XqaBQiwZnFmqT8y1eeVghxkic0YO0iRUoZipMA7EhugJ8_fyeA_3LInJbAMNrVYYDOaeIk4LkyfbKMKar0GEKTIgdhvdqGocLZBzUOA08y0L5Hyu1J_"
+
+rss_feeds:
+  urls:
+    - "https://www.cnbc.com/id/100003114/device/rss/rss.html"
+    - "https://www.reuters.com/rssFeed/topNews"
+    - "https://feeds.a.dj.com/rss/RSSMarketsMain.xml"
+    - "https://seekingalpha.com/feed.xml"
+    - "https://www.bloomberg.com/feed/podcast/all"
+    - "https://www.marketwatch.com/rss/topstories"
+    - "https://www.ft.com/?format=rss"
+    - "https://www.financialnews.com/rss"
+    - "https://www.crypto-news.com/rss"
+    - "https://www.economictimes.com/rss"
+    - "https://finance.yahoo.com/rss"
+    - "https://www.investing.com/rss/news_25.rss"
+    - "https://www.forbes.com/real-time/feed2/"
+    - "https://www.economist.com/rss/"
+    - "https://cointelegraph.com/rss"
+    - "https://www.coindesk.com/arc/outboundfeeds/rss/?outputType=xml"
+    - "https://www.businessinsider.com/rss"
+    - "https://www.nasdaq.com/feed/rssoutbound"
+    - "https://www.ft.com/rss/home/us"
+    - "https://www.zerohedge.com/rss.xml"
+    - "https://markets.ft.com/data/rss"
+    - "https://cryptopotato.com/feed/"
+
+gdelt_api:
+  url: "https://api.gdeltproject.org/api/v2/doc/doc"
+  query: 'geopolitical conflict OR natural disaster OR pandemic OR economic crisis'
+  mode: 'artlist'
+  format: 'json'
+  maxrecords: 250
+  rate_limit: 60
+  rate_period: 60
+
+google_trends:
+  keywords:
+    - 'Bitcoin'
+    - 'Ethereum'
+    - 'DeFi'
+    - 'blockchain'
+    - 'cryptocurrency'
+    - 'Solana'
+    - 'NFT'
+    - 'Metaverse'
+    - 'CryptoExchange'
+    - 'Crypto Wallet'
+    - 'DeFi Projects'
+    - 'Crypto Regulation'
+    - 'Blockchain Technology'
+    - 'Crypto Mining'
+    - 'Smart Contracts'
+    - 'Crypto Scams'
+    - 'Crypto Adoption'
+    - 'Crypto Legislation'
+    - 'Stablecoins'
+    - 'Cryptocurrency News'
+    - 'Bitcoin Price'
+    - 'Ethereum Price'
+    - 'DeFi Tokens'
+    - 'Crypto Regulation News'
+  rate_limit: 1  # 1 request per second
+  rate_period: 1
+
+economic_data:
+  encrypted_fred_key: "EgAAAAABms7JvygA_74s095uW9XN-a7qUVgtePmySbKoyguo4mWb8_ZLGSxeF1NP0SblgBjI_0J5qdZyG2Onj3P3szK3_HYAhidEDXflzYaKUa2AYU1XR-T62Yz-CILjq-YUCWDyXVjcs"
+  url: "https://api.stlouisfed.org/fred/series/observations"
+  series_ids:
+    - "GDP"
+    - "CPI"
+    - "UNRATE"
+    - "FEDFUNDS"
+    - "GDPDEF"
+    - "PAYEMS"
+    - "PPIACO"
+    - "M2SL"
+    - "EXCHUS"
+    - "RECPROUSM156N"
+    - "SP500"
+    - "DJIA"
+    - "NASDAQ"
+    - "DGS10"
+    - "IR"
+  rate_limit: 120
+  rate_period: 60
+
+forums_blogs:
+  urls:
+    - "https://bitcointalk.org"
+    - "https://forum.cryptocompare.com"
+    - "https://www.altcoinbuzz.io/rss"
+    - "https://www.theblockcrypto.com/rss"
+    - "https://medium.com/tag/cryptocurrency"
+    - "https://hackernoon.com/tagged/cryptocurrency"
+    - "https://www.coingecko.com/en/rss"
+    - "https://cryptoslate.com/feed/"
+    - "https://cryptonews.com/news/feed/"
+
+volatility_index:
+  url: "https://api.vix.com"
+  params: {}
+  rate_limit: 1  # Estimated limit based on general API practice
+  rate_period: 1
+
+volatility_threshold: 0.5
+
+mining_data:
+  api_url: "https://api.miningpool.com/v1"
+  endpoints:
+    hashrate: "/hashrate"
+    difficulty: "/difficulty"
+    block_reward: "/block_reward"
+  rate_limit: 1  # 1 request per second (adjust based on API requirements)
+  rate_period: 1
+
+cross_chain_analytics:
+  enabled: true
+  comparison_metrics: ["transaction_volume", "average_fee", "block_time"]
+  output_file: "cross_chain_comparisons.csv"
+
+technical_analysis:
+  chart_patterns: ["head_and_shoulders", "double_top", "triangle", "flag"]
+  candlestick_patterns: ["hammer", "doji", "engulfing", "shooting_star"]
+  historical_data_file: "historical_candlestick_data.csv"
+
+websockets:
+  uri: "wss://streamer.cryptocompare.com/v2"
+  rate_limit: 1  # Number of requests per second
+  rate_period: 1  # Period over which the rate limit is calculated
+
+risk_management:
+  report_file: "risk_report.json"
+  alert_threshold:
+    max_drawdown: -0.15
+    sharpe_ratio: 1.5
+    sortino_ratio: 1.5
+  stop_loss_multiplier: 1.5
+  take_profit_multiplier: 2.0
+  data_aggregation:
+    batch_size: 100
+  websocket:
+    uri: "wss://api.mainnet-beta.solana.com"
+    reconnect_interval: 5  # Time in seconds before attempting to reconnect
+  data_fetching_interval: 60  # Fetch real-time data every 60 seconds
+  scenario_analysis:
+    bear_market:
+      description: "Simulates a significant downturn in the market."
+      stop_loss_multiplier: 2.0
+      take_profit_multiplier: 1.0
+    bull_market:
+      description: "Simulates a significant upturn in the market."
+      stop_loss_multiplier: 1.0
+      take_profit_multiplier: 2.0
+    high_volatility:
+      description: "Simulates high market volatility conditions."
+      stop_loss_multiplier: 2.5
+      take_profit_multiplier: 2.5
+
+benchmark:
+  symbol: "SPY"  # The benchmark symbol (e.g., SPY for the S&P 500)
+  interval: "daily"  # Data interval (e.g., daily, weekly, monthly)
+  function: "TIME_SERIES_DAILY"  # API function to call (specific to the API being used)
+  source: "AlphaVantage"  # The data source (e.g., AlphaVantage, Yahoo Finance)
+  api:
+    url: "https://www.alphavantage.co/query"
+    params:
+      function: "TIME_SERIES_DAILY"  # This will be dynamically fetched based on the `function`
+      symbol: "SPY"  # This will be dynamically fetched based on the `symbol`
+      apikey: ""  # This will be dynamically fetched from `decrypt_keys`
+    rate_limit: 1  # 1 request per second
+    rate_period: 1
+
+price_validation:
+  base_threshold: 0.01
+  min_valid_fraction: 0.5
+  max_weight_threshold: 0.05
+  consistency_threshold: 0.02
