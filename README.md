@@ -1,13 +1,14 @@
 About the Project
 
-This project focuses on building a robust, automated cryptocurrency trading system leveraging advanced machine learning techniques and real-time data analysis. The system integrates various sources of data, including price trends, social media sentiment, and blockchain metrics, to make informed trading decisions. By combining modern data-driven approaches, the project aims to optimize profitability and minimize risk in a highly volatile market environment.
+This project focuses on building a robust, automated cryptocurrency trading system that leverages advanced machine learning techniques and real-time data analysis. The system integrates various sources of data, including price trends, social media sentiment, and blockchain metrics, to make informed trading decisions. By combining modern data-driven approaches, the project aims to optimize profitability and minimize risk in a highly volatile market environment.
 
 Project Overview
 
-The project entails multiple stages, starting with data collection from APIs, data preprocessing, feature engineering, and model training. The system is designed to continuously update itself with new data to refine predictions and strategies. Once trained, the models are evaluated on unseen data, and the best-performing model is selected for live trading. In addition to individual models, the project explores the use of model ensembles to combine strengths from various machine learning algorithms, further improving prediction accuracy.
+The project encompasses multiple stages, starting with data collection from APIs, data preprocessing, and feature engineering. Currently, I am developing the scripts for model training, evaluation, and live trading, indicating that the project is ongoing and the portfolio repository is incomplete at this stage. The system is designed to continuously update itself with new data to refine predictions and strategies. Once trained, the models will be evaluated on unseen data, and the best-performing model will be selected for live trading.
 
-The project also integrates automated risk management strategies and backtesting, allowing us to simulate trading strategies using historical data before deploying them in live markets.
+As part of the project, I will have a dedicated trading strategies directory, which will house a collection of pre-defined trading strategies. The live trading script, currently under development, will be responsible for dynamically selecting the most appropriate strategy for each trade. This process will be based on real-time analysis of market conditions, model predictions, and risk assessment metrics. The script will analyze key indicators such as market volatility, momentum, sentiment scores, and blockchain metrics to determine which strategy aligns best with the current market environment.
 
+The project also explores the use of model ensembles to combine strengths from various machine learning algorithms, enhancing prediction accuracy. Additionally, automated risk management strategies and backtesting are integrated, enabling the simulation of trading strategies using historical data before they are deployed in live market conditions.
 
 Workflow:
 Currently in Repository
@@ -82,6 +83,7 @@ Key Processing Steps and Methods/Tools Used: Calculates technical indicators, ge
 
 
 Future of Project - Work in Progress - Not in Repository yet
+
 Model Training:
 
 Train multiple models such as LSTM, GRU, Transformer, TCN, and PPO.
